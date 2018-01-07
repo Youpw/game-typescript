@@ -1,0 +1,71 @@
+html {
+    box-sizing: border-box;
+    font-size: 10px;
+    height: 100%;
+  }
+  
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
+  
+  body {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: center; */
+    padding: 50px;
+    overflow: hidden;
+  }
+  
+  #container {
+    display: flex;
+    margin: 0px
+  }
+  
+  .mouse{
+    width:30%;
+    height:30%; 
+  }
+  
+  img {
+    width: 100%;
+  }
+  
+  .rocketship {
+    margin: auto;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 150px;
+    /*essential for determining offset*/
+    height: 150px;
+    /*essential for determining offset*/
+  }
+  
+  @keyframes beating {
+    to {transform: scale(1.2);}
+  }
+  
+  .rock {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    width: 100px;
+    /*essential for determining offset*/
+    height: 100px;
+    /*essential for determining offset*/
+    z-index: -1;
+    animation: beating .75s infinite;
+  }
+  
+  .flying{
+    transition: width 2s, height 2s, background-color 2s, transform 0.5s;  
+  } */
