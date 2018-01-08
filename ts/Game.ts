@@ -4,6 +4,7 @@ class Game {
     private _rock: Rock;
     private _w = window.innerWidth;
     private _h = window.innerHeight;
+    private _scoreboard : Scoreboard;
 
 
     constructor() {
@@ -14,6 +15,10 @@ class Game {
         this._h -= 10;
         this.draw();
         this.moveDown();
+        const gameInformation = document.createElement('div');
+        gameInformation.className = 'gameInformation';
+
+        this._scoreboard = new Scoreboard(gameInformation); //could also be an event.
     }
 
     public collision(): void {
@@ -38,15 +43,6 @@ class Game {
             rockRect.top < rocketshipRect.top + rocketshipRect.height &&
             rockRect.height + rockRect.top > rocketshipRect.top) {
             // collision detected!
-        // }
-
-        // // filling in the values =>
-
-        // if (5 < 30 &&
-        //     55 > 20 &&
-        //     5 < 20 &&
-        //     55 > 10) {
-        //     // collision detected!
 
         this._rock.remove(this._element);
         window.removeEventListener('keydown', this.keyDownHandler);
@@ -56,7 +52,7 @@ class Game {
             
         }
     }
-
+    //
     public draw(): void {
         this._player.draw(this._element);
         this._rock.draw(this._element);
@@ -69,7 +65,6 @@ class Game {
 
     public keyDownHandler = (e: KeyboardEvent) => {
         if (e.keyCode === 38) {
-            console.log(this._player.yPos);
             if (this._player.yPos >= -700) {
                 this._player.moveUp(10);
                 this.update();
@@ -88,8 +83,7 @@ class Game {
             }
         }
         if (e.keyCode === 37) {
-            console.log(this._player.xPos);
-            if (this._player.xPos >= -500) {
+            if (this._player.xPos >= 0) {
                 this._player.moveLeft(10);
                 this.update();
             }
@@ -113,17 +107,20 @@ class Game {
      public moveDown(){
         setTimeout(() => {
             const rockplace = this._rock.yPos;
-            if(rockplace <= 500){                
+            if(rockplace <= 600){                
                 this._rock.moveDown();
             }
             else{
                 this._rock.remove(this._element);
                 this._rock = new Rock('rock', 0);
                 this._rock.draw(this._element);
+                Events.trigger('addScore', {temp:'someInformation'});
+                console.log(this._scoreboard);
+                
             }
             this.update();
             this.moveDown();
-        }, 250);
+        }, 50);
      }
 
 

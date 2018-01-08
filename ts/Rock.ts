@@ -42,7 +42,7 @@ class Rock extends GameItem {
 
     public moveDown(): void {
         this._yPos += 10;
-        this._element.classList.add('flying');
+
     }
     /**
     * Function to remove the coin from the DOM

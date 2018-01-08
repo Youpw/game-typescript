@@ -8,6 +8,34 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var Events = (function () {
+    function Events() {
+    }
+    Events.on = function (eventName, fn) {
+        Events.topics[eventName] = Events.topics[eventName] || [];
+        Events.topics[eventName].push(fn);
+    };
+    Events.off = function (eventName, fn) {
+        if (this.topics[eventName]) {
+            for (var i = 0; i < this.topics[eventName].length; i++) {
+                if (this.topics[eventName][i] === fn) {
+                    this.topics[eventName].splice(i, 1);
+                    break;
+                }
+            }
+            ;
+        }
+    };
+    Events.trigger = function (eventName, data) {
+        if (Events.topics[eventName]) {
+            Events.topics[eventName].forEach(function (fn) {
+                fn(data);
+            });
+        }
+    };
+    Events.topics = {};
+    return Events;
+}());
 var Game = (function () {
     function Game() {
         var _this = this;
@@ -16,7 +44,6 @@ var Game = (function () {
         this._h = window.innerHeight;
         this.keyDownHandler = function (e) {
             if (e.keyCode === 38) {
-                console.log(_this._player.yPos);
                 if (_this._player.yPos >= -700) {
                     _this._player.moveUp(10);
                     _this.update();
@@ -35,8 +62,7 @@ var Game = (function () {
                 }
             }
             if (e.keyCode === 37) {
-                console.log(_this._player.xPos);
-                if (_this._player.xPos >= -500) {
+                if (_this._player.xPos >= 0) {
                     _this._player.moveLeft(10);
                     _this.update();
                 }
@@ -61,6 +87,9 @@ var Game = (function () {
         this._h -= 10;
         this.draw();
         this.moveDown();
+        var gameInformation = document.createElement('div');
+        gameInformation.className = 'gameInformation';
+        this._scoreboard = new Scoreboard(gameInformation);
     }
     Game.prototype.collision = function () {
         var dim1 = { x: 5, y: 5 };
@@ -95,17 +124,19 @@ var Game = (function () {
         var _this = this;
         setTimeout(function () {
             var rockplace = _this._rock.yPos;
-            if (rockplace <= 500) {
+            if (rockplace <= 600) {
                 _this._rock.moveDown();
             }
             else {
                 _this._rock.remove(_this._element);
                 _this._rock = new Rock('rock', 0);
                 _this._rock.draw(_this._element);
+                Events.trigger('addScore', { temp: 'someInformation' });
+                console.log(_this._scoreboard);
             }
             _this.update();
             _this.moveDown();
-        }, 250);
+        }, 50);
     };
     return Game;
 }());
@@ -206,7 +237,6 @@ var Rock = (function (_super) {
     };
     Rock.prototype.moveDown = function () {
         this._yPos += 10;
-        this._element.classList.add('flying');
     };
     Rock.prototype.remove = function (container) {
         var elem = document.getElementById(this._name + "-" + this._id);
@@ -214,4 +244,29 @@ var Rock = (function (_super) {
     };
     return Rock;
 }(GameItem));
+var Scoreboard = (function () {
+    function Scoreboard(element) {
+        var _this = this;
+        this._score = 0;
+        this._parent = element;
+        this.render();
+        Events.on('startingPosition', function () { return _this.resetScore(0); });
+        Events.on('addScore', function () { return _this.addScore(); });
+    }
+    Scoreboard.prototype.resetScore = function (score) {
+        this._score = score;
+        this._el.innerHTML = String(this._score);
+    };
+    Scoreboard.prototype.addScore = function () {
+        this._score++;
+        this._el.innerHTML = String(this._score);
+    };
+    Scoreboard.prototype.render = function () {
+        this._el = document.createElement('div');
+        this._el.className = 'score';
+        this._el.innerHTML = String(this._score);
+        this._parent.appendChild(this._el);
+    };
+    return Scoreboard;
+}());
 //# sourceMappingURL=main.js.map
