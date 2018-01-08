@@ -19,6 +19,7 @@ class Rock extends GameItem {
     * Function to draw the initial state of the coin
     * @param {HTMLElement} - container
     */
+    //recreate the class with new changes
     public draw(container: HTMLElement): void {
         //create div
         console.log('draw');
@@ -39,7 +40,7 @@ class Rock extends GameItem {
         let rnd = Math.floor(Math.random() * 100) + 1;
         this._element.style.left = rnd + "%";
     }
-
+    //move the object down
     public moveDown(): void {
         this._yPos += 10;
 

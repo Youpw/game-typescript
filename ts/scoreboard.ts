@@ -42,7 +42,7 @@ class Scoreboard{
         //create scoreboard
         this._el = document.createElement('div');
         this._el.className = 'score';
-        this._el.innerHTML = String(this._score);
+        this._el.innerHTML = "" +this._score;
         this._parent.appendChild(this._el);
     }
 }

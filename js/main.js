@@ -89,6 +89,7 @@ var Game = (function () {
         this.moveDown();
         var gameInformation = document.createElement('div');
         gameInformation.className = 'gameInformation';
+        this._element.appendChild(gameInformation);
         this._scoreboard = new Scoreboard(gameInformation);
     }
     Game.prototype.collision = function () {
@@ -264,7 +265,7 @@ var Scoreboard = (function () {
     Scoreboard.prototype.render = function () {
         this._el = document.createElement('div');
         this._el.className = 'score';
-        this._el.innerHTML = String(this._score);
+        this._el.innerHTML = "" + this._score;
         this._parent.appendChild(this._el);
     };
     return Scoreboard;

@@ -73,7 +73,16 @@ html {
     width:600px;
     display:flex;
     align-items: center;
+    color: blue #CC3366;
+    font-size: 25px;
     justify-content: center;
     margin:0 auto;
+  }
+
+  .score {
+    background:rgba(255,255,255,0.2);
+    padding:0 3rem;
+    line-height:1;
+    border-radius:1rem;
   }
 

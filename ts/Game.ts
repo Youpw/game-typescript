@@ -17,6 +17,7 @@ class Game {
         this.moveDown();
         const gameInformation = document.createElement('div');
         gameInformation.className = 'gameInformation';
+        this._element.appendChild(gameInformation);
 
         this._scoreboard = new Scoreboard(gameInformation); //could also be an event.
     }
@@ -52,17 +53,18 @@ class Game {
             
         }
     }
-    //
+    //recreate the classes instances
     public draw(): void {
         this._player.draw(this._element);
         this._rock.draw(this._element);
     }
+    //update alles zodat alle draws worden uitgevoerd en word gekeken of er collision is
     public update() {
         this._player.update();
         this._rock.update();
         this.collision();
     }
-
+    //read the arrow movements to activate movement on the Mouse
     public keyDownHandler = (e: KeyboardEvent) => {
         if (e.keyCode === 38) {
             if (this._player.yPos >= -700) {
@@ -103,7 +105,7 @@ class Game {
         }
 
     }
-
+    //loop the moveDown function of rock
      public moveDown(){
         setTimeout(() => {
             const rockplace = this._rock.yPos;

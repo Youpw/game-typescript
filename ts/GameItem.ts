@@ -33,7 +33,7 @@ class GameItem{
     public get xPos():number{
         return this._xPos;
      }
-
+     //recreate the object with possible changes to the instance
     public draw(container: HTMLElement): void {
         //create div
         //this._element = document.createElement('div');
