@@ -60,6 +60,7 @@ var Game = (function () {
         this._w -= 10;
         this._h -= 10;
         this.draw();
+        this.moveDown();
     }
     Game.prototype.collision = function () {
         var dim1 = { x: 5, y: 5 };
@@ -70,7 +71,6 @@ var Game = (function () {
         var rockH = rockRect.bottom - rockRect.top;
         var rocketshipW = rocketshipRect.right - rocketshipRect.left;
         var rocketshipH = rocketshipRect.bottom - rocketshipRect.top;
-        console.log(rockW, rockH, rocketshipW, rocketshipH);
         if (rockRect.left < rocketshipRect.left + rocketshipRect.width &&
             rockRect.left + rockRect.width > rocketshipRect.left &&
             rockRect.top < rocketshipRect.top + rocketshipRect.height &&
@@ -80,7 +80,6 @@ var Game = (function () {
             console.log('collision');
         }
         else {
-            console.log('no collision');
         }
     };
     Game.prototype.draw = function () {
@@ -88,12 +87,25 @@ var Game = (function () {
         this._rock.draw(this._element);
     };
     Game.prototype.update = function () {
-        this.collision();
         this._player.update();
         this._rock.update();
+        this.collision();
     };
     Game.prototype.moveDown = function () {
-        this._rock.moveDown();
+        var _this = this;
+        setTimeout(function () {
+            var rockplace = _this._rock.yPos;
+            if (rockplace <= 500) {
+                _this._rock.moveDown();
+            }
+            else {
+                _this._rock.remove(_this._element);
+                _this._rock = new Rock('rock', 0);
+                _this._rock.draw(_this._element);
+            }
+            _this.update();
+            _this.moveDown();
+        }, 250);
     };
     return Game;
 }());
@@ -102,6 +114,7 @@ var GameItem = (function () {
         this._name = name;
         this._xPos = xPos;
         this._yPos = yPos;
+        this._element = document.createElement('div');
     }
     Object.defineProperty(GameItem.prototype, "xPos", {
         get: function () {
@@ -124,7 +137,6 @@ var GameItem = (function () {
         configurable: true
     });
     GameItem.prototype.draw = function (container) {
-        this._element = document.createElement('div');
         this._element.className = this._name;
         this._element.id = this._name;
         this._element.style.transform = "translate(" + this._xPos + "px, " + this._yPos + "px)";

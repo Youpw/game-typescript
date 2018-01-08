@@ -15,6 +15,7 @@ class GameItem{
         this._name = name;
         this._xPos = xPos;
         this._yPos = yPos;
+        this._element = document.createElement('div');
     }
 
     public set xPos(xPosition:number){
@@ -35,7 +36,7 @@ class GameItem{
 
     public draw(container: HTMLElement): void {
         //create div
-        this._element = document.createElement('div');
+        //this._element = document.createElement('div');
         this._element.className = this._name;
         this._element.id = this._name;
         this._element.style.transform = `translate(${this._xPos}px, ${this._yPos}px)`;

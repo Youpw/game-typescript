@@ -12,14 +12,17 @@ class Game {
         document.addEventListener('keydown', this.keyDownHandler);
         this._w -= 10;
         this._h -= 10;
-
         this.draw();
+        this.moveDown();
     }
 
     public collision(): void {
         //use elem.getBoundingClientRect() for getting the wright coordinates and measurements of the element
         var dim1 = { x: 5, y: 5 }
         var dim2 = { x: 20, y: 10 }
+        // stap1: kijk of rock-0 bestaat in de DOM
+
+        // if (rock0exists)
         const rockRect = document.getElementById('rock-0').getBoundingClientRect();
         const rocketshipRect = document.getElementById('rocketship').getBoundingClientRect();
 
@@ -29,8 +32,6 @@ class Game {
 
         const rocketshipW = rocketshipRect.right - rocketshipRect.left;
         const rocketshipH = rocketshipRect.bottom - rocketshipRect.top;
-
-        console.log(rockW, rockH, rocketshipW, rocketshipH);
 
         if (rockRect.left < rocketshipRect.left + rocketshipRect.width &&
             rockRect.left + rockRect.width > rocketshipRect.left &&
@@ -52,7 +53,7 @@ class Game {
             console.log('collision');
             
         } else {
-            console.log('no collision');
+            
         }
     }
 
@@ -61,9 +62,9 @@ class Game {
         this._rock.draw(this._element);
     }
     public update() {
-        this.collision();
         this._player.update();
         this._rock.update();
+        this.collision();
     }
 
     public keyDownHandler = (e: KeyboardEvent) => {
@@ -109,13 +110,24 @@ class Game {
 
     }
 
-    public moveDown() {
-        this._rock.moveDown();
-    }
+     public moveDown(){
+        setTimeout(() => {
+            const rockplace = this._rock.yPos;
+            if(rockplace <= 500){                
+                this._rock.moveDown();
+            }
+            else{
+                this._rock.remove(this._element);
+                this._rock = new Rock('rock', 0);
+                this._rock.draw(this._element);
+            }
+            this.update();
+            this.moveDown();
+        }, 250);
+     }
+
+
+
     
-    setInterval(moveDown, 1000);
-
-    moveDown();
-
 }
 
